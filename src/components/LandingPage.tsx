@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Star, Coffee, Heart, ChevronRight, CheckCircle2, Calculator, TrendingUp, Mail, Globe, Phone, Quote, User } from 'lucide-react';
+import { MapPin, Star, Heart, ChevronRight, CheckCircle2, Calculator, TrendingUp, Mail, Globe, Phone, Quote, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
@@ -16,7 +16,7 @@ export default function LandingPage() {
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
   };
 
   return (
@@ -29,9 +29,9 @@ export default function LandingPage() {
       >
         <nav className="max-w-6xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-4 sm:px-6 h-16 flex items-center justify-between shadow-xl">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center shadow-inner p-1 sm:p-2">
-               <img src="/logo-yukkos.svg" alt="Yukkos Logo" className="h-full w-full object-contain" />
-            </div>
+          <div className="h-8 sm:h-10 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center shadow-inner px-2 overflow-hidden">
+            <img src="/logo-yukkos.svg" alt="Yukkos Logo" className="h-[80%] w-auto object-contain drop-shadow-md" />
+          </div>
             <span className="text-xl sm:text-2xl font-bold text-white tracking-tight">Yuk<span className="text-yk-cherry">kos</span></span>
           </div>
           
@@ -41,15 +41,27 @@ export default function LandingPage() {
             <a href="#simulasi" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Simulasi Cuan</a>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link to="/dashboard" className="px-4 py-2 sm:px-5 sm:py-2.5 bg-yk-cherry text-white text-xs sm:text-sm font-bold rounded-full hover:bg-yk-cherry-hover transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(239,57,20,0.4)]">
-              Daftar <span className="hidden sm:inline">Properti</span>
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Tombol Login (Masuk) - Gaya Transparan/Outline */}
+            <Link 
+              to="/login" 
+              className="text-xs sm:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full transition-colors hidden sm:block"
+            >
+              Masuk
+            </Link>
+            
+            {/* Tombol Register (Daftar) - Gaya Tombol Utama (Solid) */}
+            <Link 
+              to="/register" 
+              className="px-4 py-2 sm:px-5 sm:py-2.5 bg-yk-cherry text-white text-xs sm:text-sm font-bold rounded-full hover:bg-yk-cherry-hover transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(239,57,20,0.4)] flex items-center gap-2"
+            >
+              Daftar <span className="hidden sm:inline">Sekarang</span>
             </Link>
           </div>
         </nav>
       </motion.div>
 
-      <main className="pt-32 sm:pt-36 pb-20 px-4 sm:px-6 relative">
+      <main id="ekosistem" className="pt-32 sm:pt-36 pb-20 px-4 sm:px-6 relative">
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] sm:w-[800px] h-[300px] sm:h-[500px] bg-gradient-to-r from-yk-cherry/20 to-orange-500/10 rounded-full blur-[80px] sm:blur-[120px] -z-10 pointer-events-none"></div>
 
         {/* HERO SECTION */}
@@ -257,12 +269,12 @@ export default function LandingPage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/5 bg-[#051026] mt-20 pt-16 sm:pt-20 pb-8 px-6">
+      <footer className="border-t border-white/5 bg-[#051026] mt-20 pt-16 sm:pt-20 pb-8 px-6">``
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 sm:gap-12 mb-12 sm:mb-16">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
                <div className="bg-white/5 p-1.5 rounded-lg border border-white/10">
-                 <img src="/logo-yukkos.svg" alt="Yukkos Logo" className="h-6 sm:h-7 w-auto object-contain opacity-80" />
+                 <img src="/logo-yukkos.svg" alt="Yukkos Logo" className="h-8 sm:h-10 w-auto object-contain drop-shadow-lg" />
                </div>
                <span className="text-xl sm:text-2xl font-bold text-white tracking-tight">Yuk<span className="text-yk-cherry opacity-80">kos</span></span>
             </div>

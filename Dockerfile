@@ -1,5 +1,5 @@
 # ==========================================
-#  BUILDER
+# Tahap 1: Builder ( Dev & Prod)
 # ==========================================
 FROM node:20-alpine AS builder
 
@@ -9,12 +9,13 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
 RUN npm run build
 
 # ==========================================
-# PRODUCTION SERVER
+# Tahap 2: Production Server 
 # ==========================================
-FROM nginx:alpine
+FROM nginx:alpine AS production
 
 RUN rm /etc/nginx/conf.d/default.conf
 
