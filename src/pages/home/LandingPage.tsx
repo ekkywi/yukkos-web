@@ -56,7 +56,7 @@ export default function LandingPage() {
     if (searchForm.location) params.append('location', searchForm.location);
     if (searchForm.type) params.append('type', searchForm.type);
     if (searchForm.maxPrice) params.append('maxPrice', searchForm.maxPrice);
-    navigate(`/dashboard?${params.toString()}`);
+    navigate(`/explore?${params.toString()}`);
   };
 
   return (
@@ -83,7 +83,7 @@ export default function LandingPage() {
             {/* Menu Tengah */}
             <div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
               <Link to="/" className="text-yk-cherry font-bold">Home</Link>
-              <Link to="#cari" className="hover:text-yk-cherry transition-colors">Cari Kost</Link>
+              <Link to="/explore" className="hover:text-yk-cherry transition-colors">Cari Kost</Link>
               <Link to="#promo" className="hover:text-yk-cherry transition-colors">Promo</Link>
             </div>
 
@@ -266,7 +266,10 @@ export default function LandingPage() {
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Cari Tempat Kost Nyaman,<br/>Tanpa Drama.</h2>
             <p className="text-slate-300 mb-8 text-lg">Jelajahi tempat kost berdasarkan kebutuhan, tipe, dan harga. Mulai hidup mandiri dengan tenang.</p>
-            <button className="bg-white text-slate-900 px-8 py-4 rounded-full font-bold transition-all hover:scale-105 shadow-lg flex items-center gap-2">
+            <button 
+              onClick={() => navigate('/explore')}
+              className="bg-white text-slate-900 px-8 py-4 rounded-full font-bold transition-all hover:scale-105 shadow-lg flex items-center gap-2"
+            >
               Mulai Eksplorasi <ChevronRight size={18} />
             </button>
           </div>
