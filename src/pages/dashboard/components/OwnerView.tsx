@@ -1,32 +1,40 @@
-import { Building2, Users, Wallet } from 'lucide-react';
+import { Building2, Users, Wallet, ArrowUpRight } from 'lucide-react';
 
 export default function OwnerView() {
   return (
-    <div className="space-y-6">
-      <div className="bg-yk-cherry/10 border border-yk-cherry/20 p-6 rounded-2xl">
-        <h2 className="text-2xl font-bold text-white mb-2">Ringkasan Properti Anda</h2>
-        <p className="text-slate-400 text-sm">Kelola kamar, pantau penyewa, dan cek pendapatan bulan ini.</p>
+    <div className="space-y-8">
+      {/* Grid Statistik */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard icon={<Building2 size={24} />} title="Total Kamar" value="15 Unit" detail="3 Kamar Kosong" color="bg-blue-500" />
+        <StatCard icon={<Users size={24} />} title="Penyewa Aktif" value="12 Orang" detail="90% Okupansi" color="bg-orange-500" />
+        <StatCard icon={<Wallet size={24} />} title="Pendapatan Mei" value="Rp 18.250.000" detail="+12% dari bulan lalu" color="bg-emerald-500" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Nanti data di bawah ini diambil dari API BFF Web */}
-        <Card icon={<Building2 />} title="Total Kamar" value="15 Unit" />
-        <Card icon={<Users />} title="Penyewa Aktif" value="12 Orang" />
-        <Card icon={<Wallet />} title="Pendapatan (Bulan ini)" value="Rp 18.000.000" />
+      {/* Placeholder untuk List Kamar atau Aktivitas Terbaru */}
+      <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-black text-slate-900">Properti Terlaris</h3>
+          <button className="text-sm font-bold text-orange-500 hover:underline flex items-center gap-1">
+            Lihat Semua <ArrowUpRight size={16} />
+          </button>
+        </div>
+        <div className="h-40 border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 font-medium">
+          Daftar properti Anda akan muncul di sini.
+        </div>
       </div>
     </div>
   );
 }
 
-// Komponen kecil untuk Card
-function Card({ icon, title, value }: any) {
+function StatCard({ icon, title, value, detail, color }: any) {
   return (
-    <div className="bg-white/5 border border-white/10 p-6 rounded-xl flex items-center gap-4">
-      <div className="p-3 bg-white/10 rounded-lg text-yk-cherry">{icon}</div>
-      <div>
-        <p className="text-slate-400 text-xs font-medium">{title}</p>
-        <p className="text-white font-bold text-lg">{value}</p>
+    <div className="bg-white border border-slate-200 p-6 rounded-[2rem] shadow-sm hover:shadow-md transition-all group">
+      <div className={`w-12 h-12 ${color} text-white rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-inner`}>
+        {icon}
       </div>
+      <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">{title}</p>
+      <p className="text-3xl font-black text-slate-900 mb-2">{value}</p>
+      <p className="text-xs font-bold text-slate-400">{detail}</p>
     </div>
   );
 }

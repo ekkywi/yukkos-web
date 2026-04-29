@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
-import { Mail, Lock, ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, CheckCircle2, Eye, EyeOff, AlertCircle, X } from 'lucide-react';
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -21,7 +21,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -29,21 +29,43 @@ export default function LoginPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errorMessage) setErrorMessage(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // TODO: Ganti ini dengan integrasi API Auth NestJS
-    console.log('Logging in...', formData);
-    
-    // Simulasi loading sebentar lalu lempar ke dashboard
-    setTimeout(() => {
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // console.log('Login berhasil:', data);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/explore');
+      } else {
+        setErrorMessage(`Login gagal: ${data.message || 'Periksa kembali email dan kata sandi Anda.'}`);
+      } 
+    } catch (error) {
+      // console.error('Error saat login:', error);
+      setErrorMessage('Terjadi kesalahan jaringan. Silakan coba lagi nanti.');
+    } finally {
       setIsLoading(false);
-      navigate('/dashboard');
-    }, 1000);
-  };
+    }
+  }
 
   return (
     <div className="min-h-screen flex bg-white font-sans overflow-hidden">
@@ -112,7 +134,7 @@ export default function LoginPage() {
           </Link>
         </motion.div>
 
-        {/* Wrapper Form Kanan dengan Animasi Stagger (Muncul sedikit lebih lambat dari bagian kiri) */}
+        {/* Wrapper Form Kanan dengan Animasi Stagger */}
         <motion.div 
           initial="hidden"
           animate="visible"
@@ -126,6 +148,29 @@ export default function LoginPage() {
           </motion.div>
 
           <motion.form variants={fadeInUp} onSubmit={handleSubmit} className="space-y-6">
+            
+            {/* ALERT ERROR KUSTOM */}
+            {errorMessage && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10, scale: 0.95 }} 
+                animate={{ opacity: 1, y: 0, scale: 1 }} 
+                className="bg-red-50 border border-red-200 p-4 rounded-xl flex items-start gap-3 shadow-sm"
+              >
+                <AlertCircle size={20} className="text-red-500 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold text-red-800">Gagal Masuk</h4>
+                  <p className="text-xs font-medium text-red-600 mt-0.5 leading-relaxed">{errorMessage}</p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setErrorMessage(null)} 
+                  className="text-red-400 hover:text-red-700 hover:bg-red-100 p-1 rounded-md transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </motion.div>
+            )}
+
             <div className="space-y-5">
               {/* Email */}
               <div className="space-y-1.5">
@@ -136,7 +181,7 @@ export default function LoginPage() {
                     type="email" name="email" required
                     value={formData.email} onChange={handleInputChange}
                     placeholder="johndoe@mail.com" 
-                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yk-cherry/20 focus:border-yk-cherry transition-all font-medium"
+                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yk-cherry/20 focus:border-yk-cherry transition-all font-medium"
                   />
                 </div>
               </div>
@@ -156,7 +201,7 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"} name="password" required
                     value={formData.password} onChange={handleInputChange}
                     placeholder="Masukkan kata sandi" 
-                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yk-cherry/20 focus:border-yk-cherry transition-all font-medium"
+                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yk-cherry/20 focus:border-yk-cherry transition-all font-medium"
                   />
                   <button 
                     type="button" 

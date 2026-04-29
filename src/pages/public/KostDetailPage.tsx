@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   Heart, Share2, Bed, Bath, Car, 
   MapPin, Wifi, Tv, Snowflake, Waves, 
@@ -42,7 +42,6 @@ const MOCK_DETAIL = {
 };
 
 export default function KostDetailPage() {
-  const { id } = useParams(); // Mengambil ID dari URL
   const [isFavorite, setIsFavorite] = useState(false);
 
   // Fungsi format mata uang

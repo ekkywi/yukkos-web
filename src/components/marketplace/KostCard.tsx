@@ -1,6 +1,4 @@
 import { Heart, MapPin, Bed, Bath, Maximize2, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { formatRupiah } from '../../lib/utils';
 import { Link } from 'react-router-dom';
 
 interface KostCardProps {
